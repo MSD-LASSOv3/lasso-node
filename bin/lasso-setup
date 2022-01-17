@@ -27,7 +27,7 @@ def argument_parser():
 
     parser.add_argument(
         '--tunnel', dest='port', type=intx, default=None,
-        help='Configure reverse tunnel to lasso server using port "PORT" [default=%(default)r]')
+        help='Configure reverse ssh tunnel to lasso server using port "PORT" [default=%(default)r]')
     parser.add_argument(
         '--gps', dest='gps', action='store_true', default=False,
         help='Setup GPS module to update system time [default=%(default)r]')
@@ -46,10 +46,15 @@ def main(options=None):
 
     if options.port:
         subprocess.call(setup_dir + 'tunnel-setup.sh' + str(options.port))
+        print('Reverse ssh tunnel setup is complete.')
     if options.gps:
         subprocess.call(setup_dir + 'gps-setup.sh')
+        print('GPS module setup is complete')
 
-    print('Setup complete. Please reboot system')
+    if options.port or options.gps:
+        print('Please reboot system')
+    else:
+        print('No setup was performed. Plese see "lasso-setup --help" for usage')
 
     
 if __name__ == '__main__':
