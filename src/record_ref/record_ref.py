@@ -26,7 +26,7 @@ import pmt
 
 class record_ref(gr.top_block):
 
-    def __init__(self, center_freq=97000000, channel_freq=97900000, file_loc="/tmp/lasso_capture", hackrf_index=0, num_samples=10000000, samp_rate=2000000):
+    def __init__(self, center_freq=97000000, channel_freq=97300000, file_loc="/tmp/lasso_capture", hackrf_index=0, num_samples=10000000, samp_rate=2000000):
         gr.top_block.__init__(self, "Record Ref")
 
         ##################################################
@@ -61,7 +61,7 @@ class record_ref(gr.top_block):
         self.osmosdr_source_0.set_bandwidth(0, 0)
         self.blocks_multiply_xx_0 = blocks.multiply_vcc(1)
         self.blocks_head_0 = blocks.head(gr.sizeof_gr_complex*1, num_samples)
-        self.blocks_file_meta_sink_0 = blocks.file_meta_sink(gr.sizeof_gr_complex*1, file_loc+"_END_"+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_"), samp_rate, 1, blocks.GR_FILE_FLOAT, True, 1000000, pmt.make_dict(), False)
+        self.blocks_file_meta_sink_0 = blocks.file_meta_sink(gr.sizeof_gr_complex*1, file_loc+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_"), samp_rate, 1, blocks.GR_FILE_FLOAT, True, 1000000, pmt.make_dict(), True)
         self.blocks_file_meta_sink_0.set_unbuffered(False)
         self.analog_sig_source_x_0 = analog.sig_source_c(samp_rate, analog.GR_COS_WAVE, center_freq - channel_freq, 1, 0, 0)
 
@@ -96,7 +96,7 @@ class record_ref(gr.top_block):
 
     def set_file_loc(self, file_loc):
         self.file_loc = file_loc
-        self.blocks_file_meta_sink_0.open(self.file_loc+"_END_"+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_"))
+        self.blocks_file_meta_sink_0.open(self.file_loc+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_"))
 
     def get_hackrf_index(self):
         return self.hackrf_index
@@ -128,7 +128,7 @@ def argument_parser():
         "--center-freq", dest="center_freq", type=intx, default=97000000,
         help="Set center_freq [default=%(default)r]")
     parser.add_argument(
-        "--channel-freq", dest="channel_freq", type=intx, default=97900000,
+        "--channel-freq", dest="channel_freq", type=intx, default=97300000,
         help="Set channel_freq [default=%(default)r]")
     parser.add_argument(
         "--hackrf-index", dest="hackrf_index", type=intx, default=0,

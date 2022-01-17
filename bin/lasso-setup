@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+
+from argparse import ArgumentParser
+import os
+import subprocess
+
+def is_root():
+    return os.geteuid() == 0
+
+def argument_parser():
+    parser = ArgumentParser()
+
+    parser.add_argument(
+        '--all', dest='all', action='store_true', default=False,
+        help='Setup everything [default=%(default)r]')
+    parser.add_argument(
+        '--software', dest='software', action='store_true', default=False,
+        help='Install software require for lasso [default=%(default)r]')
+    parser.add_argument(
+        '--software-dev', dest='software_dev', action='store_true', default=False,
+        help='Install developer software [default=%(default)r]')
+    parser.add_argument(
+        '--ssh', dest='ssh', action='store_true', default=False,
+        help='Enable ability to ssh into pi [default=%(default)r]')
+    parser.add_argument(
+        '--ssh-tunnel', dest='ssh_tunnel', action='store_true', default=False,
+        help='Configure reverse ssh-tunnel to lasso server [default=%(default)r]')
+    parser.add_argument(
+        '--gps', dest='gps', action='store_true', default=False,
+        help='Setup GPS module to update system time [default=%(default)r]')
+    
+    return parser
+
+def main(options=None):
+    if options is None:
+        options = argument_parser().parse_args()
+
+    if not is_root():
+        print('Please run lasso-setup as root user. i.e. "sudo lasso-setup"')
+        exit(1)
+    
+    try:
+        LASSO = os.environ['LASSO']
+    except KeyError:
+        print('No "LASSO" enviroment variable found. Please set "LASSO" to the top level')
+        print('directory of the lasso-node repository before running the setup script.')
+        print('    i.e. add the line "export LASSO=/home/pi/lasso-node" to your ~/.bashrc')
+        print('    and powercycle the pi')
+        exit(1)
+
+    if not os.path.isfile(LASSO):
+        print('The "LASSO" enviroment variable is not valid.')
+        exit(1)
+
+    setup_dir = LASSO + '/src/setup/'
+
+    if options.software or options.all:
+        subprocess.call(setup_dir + 'software-setup.sh')
+    if options.software_dev or options.all:
+        subprocess.call(setup_dir + 'softawre-dev-setup.sh')
+    if options.ssh or options.all:
+        subprocess.call(setup_dir + 'ssh-setup.sh')
+    if options.ssh_tunnel or options.all:
+        subprocess.call(setup_dir + 'ssh-tunnel-setup.sh')
+    if options.gps or options.all:
+        subprocess.call(setup_dir + 'gps-setup.sh')
+
+    
+if __name__ == '__main__':
+    main()

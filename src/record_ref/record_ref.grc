@@ -62,7 +62,7 @@ blocks:
     comment: ''
     detached: 'True'
     extra_dict: pmt.make_dict()
-    file: file_loc+"_END_"+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_")
+    file: file_loc+str(datetime.datetime.now()).replace(" ","_").replace(":","_").replace(".","_")
     max_seg_size: '1000000'
     rel_rate: '1'
     samp_rate: samp_rate
@@ -138,7 +138,7 @@ blocks:
     label: channel_freq
     short_id: ''
     type: intx
-    value: '97900000'
+    value: '97300000'
   states:
     bus_sink: false
     bus_source: false

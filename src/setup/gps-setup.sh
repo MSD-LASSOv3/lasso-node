@@ -1,10 +1,9 @@
 #!/bin/bash
-#run using sudo
 
 apt update
 apt upgrade
 rpi-update
-apt install pps-tools gpsd gpsd-clients python-gps chrony
+apt install -y pps-tools gpsd gpsd-clients python-gps chrony
 
 bash -c "echo '# the next 3 lines are for GPS PPS signals' >> /boot/config.txt"
 bash -c "echo 'dtoverlay=pps-gpio,gpiopin=18' >> /boot/config.txt"
