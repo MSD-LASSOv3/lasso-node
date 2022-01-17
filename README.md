@@ -12,7 +12,7 @@
 Install the required software dependencies for this project with the commands below:
 
  > sudo apt update  
- > sudo apt install -y gnuradio hackrf gr-osmosdr at pps-tools gpsd gpsd-clients python3-gps chrony
+ > sudo apt install -y gnuradio hackrf gr-osmosdr at pps-tools gpsd gpsd-clients python3-gps chrony autossh
 
 ## Setup
  The lasso-node repository is setup using the lasso-setup utility. To view the

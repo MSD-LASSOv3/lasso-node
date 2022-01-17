@@ -45,7 +45,7 @@ def main(options=None):
     setup_dir = os.path.dirname(os.path.realpath(__file__)) + '/../src/setup/'
 
     if options.port:
-        subprocess.call(setup_dir + 'tunnel-setup.sh' + str(options.port))
+        subprocess.call([setup_dir + 'tunnel-setup.sh', str(options.port)])
         print('Reverse ssh tunnel setup is complete.')
     if options.gps:
         subprocess.call(setup_dir + 'gps-setup.sh')
