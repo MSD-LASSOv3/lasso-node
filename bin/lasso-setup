@@ -41,21 +41,8 @@ def main(options=None):
     if not is_root():
         print('Please run lasso-setup as root user. i.e. "sudo lasso-setup"')
         exit(1)
-    
-    try:
-        LASSO = os.environ['LASSO']
-    except KeyError:
-        print('No "LASSO" enviroment variable found. Please set "LASSO" to the top level')
-        print('directory of the lasso-node repository before running the setup script.')
-        print('    i.e. add the line "export LASSO=/home/pi/lasso-node" to your ~/.bashrc')
-        print('    and powercycle the pi')
-        exit(1)
 
-    if not os.path.isfile(LASSO):
-        print('The "LASSO" enviroment variable is not valid.')
-        exit(1)
-
-    setup_dir = LASSO + '/src/setup/'
+    setup_dir = os.path.dirname(os.path.realpath(__file__)) + '/../src/setup/'
 
     if options.port:
         subprocess.call(setup_dir + 'tunnel-setup.sh' + str(options.port))
