@@ -3,28 +3,31 @@
 from argparse import ArgumentParser
 import os
 import subprocess
+import argparse
 
 def is_root():
     return os.geteuid() == 0
+
+
+def intx(string):
+    """
+    Generic integer type, will interpret string as string literal.
+    Does the right thing for 0x1F, 0b10101, 010.
+    """
+    try:
+        return int(string, 0)
+    except (ValueError, TypeError):
+        raise argparse.ArgumentTypeError(
+            "Invalid integer value: {}".format(string)
+        )
+
 
 def argument_parser():
     parser = ArgumentParser()
 
     parser.add_argument(
-        '--all', dest='all', action='store_true', default=False,
-        help='Setup everything [default=%(default)r]')
-    parser.add_argument(
-        '--software', dest='software', action='store_true', default=False,
-        help='Install software require for lasso [default=%(default)r]')
-    parser.add_argument(
-        '--software-dev', dest='software_dev', action='store_true', default=False,
-        help='Install developer software [default=%(default)r]')
-    parser.add_argument(
-        '--ssh', dest='ssh', action='store_true', default=False,
-        help='Enable ability to ssh into pi [default=%(default)r]')
-    parser.add_argument(
-        '--ssh-tunnel', dest='ssh_tunnel', action='store_true', default=False,
-        help='Configure reverse ssh-tunnel to lasso server [default=%(default)r]')
+        '--tunnel', dest='port', type=intx, default=None,
+        help='Configure reverse tunnel to lasso server using port "PORT" [default=%(default)r]')
     parser.add_argument(
         '--gps', dest='gps', action='store_true', default=False,
         help='Setup GPS module to update system time [default=%(default)r]')
@@ -54,16 +57,12 @@ def main(options=None):
 
     setup_dir = LASSO + '/src/setup/'
 
-    if options.software or options.all:
-        subprocess.call(setup_dir + 'software-setup.sh')
-    if options.software_dev or options.all:
-        subprocess.call(setup_dir + 'softawre-dev-setup.sh')
-    if options.ssh or options.all:
-        subprocess.call(setup_dir + 'ssh-setup.sh')
-    if options.ssh_tunnel or options.all:
-        subprocess.call(setup_dir + 'ssh-tunnel-setup.sh')
-    if options.gps or options.all:
+    if options.port:
+        subprocess.call(setup_dir + 'tunnel-setup.sh' + str(options.port))
+    if options.gps:
         subprocess.call(setup_dir + 'gps-setup.sh')
+
+    print('Setup complete. Please reboot system')
 
     
 if __name__ == '__main__':
