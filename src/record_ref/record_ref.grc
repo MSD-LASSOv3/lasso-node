@@ -15,7 +15,7 @@ options:
     output_language: python
     placement: (0,0)
     qt_qss_theme: ''
-    realtime_scheduling: ''
+    realtime_scheduling: '1'
     run: 'True'
     run_command: '{python} -u {filename}'
     run_options: run
@@ -121,12 +121,12 @@ blocks:
     label: center_freq
     short_id: ''
     type: intx
-    value: '97000000'
+    value: '436000000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 188]
+    coordinate: [8, 212.0]
     rotation: 0
     state: enabled
 - name: channel_freq
@@ -138,12 +138,12 @@ blocks:
     label: channel_freq
     short_id: ''
     type: intx
-    value: '97300000'
+    value: '437000000'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 92]
+    coordinate: [8, 116.0]
     rotation: 0
     state: enabled
 - name: file_loc
@@ -154,13 +154,13 @@ blocks:
     hide: none
     label: file_loc
     short_id: ''
-    type: ''
+    type: str
     value: '"/tmp/lasso_capture"'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 188.0]
+    coordinate: [896, 172.0]
     rotation: 0
     state: enabled
 - name: hackrf_index
@@ -190,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [192, 12]
+    coordinate: [224, 12.0]
     rotation: 0
     state: enabled
 - name: import_1
@@ -203,7 +203,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [320, 12.0]
+    coordinate: [352, 12.0]
     rotation: 0
     state: true
 - name: num_samples
@@ -220,7 +220,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 284]
+    coordinate: [8, 308.0]
     rotation: 0
     state: enabled
 - name: osmosdr_source_0
@@ -735,7 +735,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [8, 380]
+    coordinate: [8, 404.0]
     rotation: 0
     state: enabled
 

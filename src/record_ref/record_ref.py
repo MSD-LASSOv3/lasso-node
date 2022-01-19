@@ -26,7 +26,7 @@ import pmt
 
 class record_ref(gr.top_block):
 
-    def __init__(self, center_freq=97000000, channel_freq=97300000, file_loc="/tmp/lasso_capture", hackrf_index=0, num_samples=10000000, samp_rate=2000000):
+    def __init__(self, center_freq=436000000, channel_freq=437000000, file_loc="/tmp/lasso_capture", hackrf_index=0, num_samples=10000000, samp_rate=2000000):
         gr.top_block.__init__(self, "Record Ref")
 
         ##################################################
@@ -125,11 +125,14 @@ class record_ref(gr.top_block):
 def argument_parser():
     parser = ArgumentParser()
     parser.add_argument(
-        "--center-freq", dest="center_freq", type=intx, default=97000000,
+        "--center-freq", dest="center_freq", type=intx, default=436000000,
         help="Set center_freq [default=%(default)r]")
     parser.add_argument(
-        "--channel-freq", dest="channel_freq", type=intx, default=97300000,
+        "--channel-freq", dest="channel_freq", type=intx, default=437000000,
         help="Set channel_freq [default=%(default)r]")
+    parser.add_argument(
+        "--file-loc", dest="file_loc", type=str, default="/tmp/lasso_capture",
+        help="Set /tmp/lasso_capture [default=%(default)r]")
     parser.add_argument(
         "--hackrf-index", dest="hackrf_index", type=intx, default=0,
         help="Set hackrf_index [default=%(default)r]")
@@ -145,7 +148,9 @@ def argument_parser():
 def main(top_block_cls=record_ref, options=None):
     if options is None:
         options = argument_parser().parse_args()
-    tb = top_block_cls(center_freq=options.center_freq, channel_freq=options.channel_freq, hackrf_index=options.hackrf_index, num_samples=options.num_samples, samp_rate=options.samp_rate)
+    if gr.enable_realtime_scheduling() != gr.RT_OK:
+        print("Error: failed to enable real-time scheduling.")
+    tb = top_block_cls(center_freq=options.center_freq, channel_freq=options.channel_freq, file_loc=options.file_loc, hackrf_index=options.hackrf_index, num_samples=options.num_samples, samp_rate=options.samp_rate)
 
     def sig_handler(sig=None, frame=None):
         tb.stop()

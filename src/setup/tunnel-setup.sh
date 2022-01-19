@@ -1,6 +1,6 @@
 #!/bin/bash
 
-src=$(pwd)/../src
+src=$(dirname "$0")/..
 
 systemctl enable ssh
 systemctl start ssh
