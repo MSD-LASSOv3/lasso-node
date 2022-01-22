@@ -25,6 +25,14 @@ def intx(string):
 def argument_parser():
     parser = ArgumentParser()
 
+    # Optional config parameters
+    parser.add_argument(
+        '--user', dest='user', type=str, default='pi',
+        help='The User who will be running the lasso-node [default=%(default)r]')
+    parser.add_argument(
+        '--server', dest='ip', type=str, default='lasso.rit.edu',
+        help='The lasso-server IP address [default=%(default)r]')
+
     parser.add_argument(
         '--tunnel', dest='port', type=intx, default=None,
         help='Configure reverse ssh tunnel to lasso server using port "PORT" [default=%(default)r]')
@@ -45,7 +53,14 @@ def main(options=None):
     setup_dir = os.path.dirname(os.path.realpath(__file__)) + '/'
 
     if options.port:
-        subprocess.call([setup_dir + 'tunnel-setup.sh', str(options.port)])
+        # enable ssh services if not already started
+        if subprocess.call(['systemctl', 'is-active', '--quiet', 'ssh']):
+            subprocess.call(['systemctl', 'enable', 'ssh'])
+            subprocess.call(['systemctl', 'start', 'ssh'])
+
+        # Run the tunnel-setup script
+        subprocess.call(['sudo', '-u', options.user, setup_dir + 'tunnel-setup.sh', options.ip, str(options.port)])
+        
         print('Reverse ssh tunnel setup is complete.')
     if options.gps:
         subprocess.call(setup_dir + 'gps-setup.sh')
