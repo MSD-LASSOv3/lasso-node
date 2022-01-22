@@ -21,7 +21,7 @@ LASSO has dependenies which not installed on a fresh Raspbian Install. To Instal
 The lasso-node repository is setup using the lasso-setup utility. To view the
 commmands available to this utility use the --help flag as shown below.
 
-> cd bin  
+> cd tools  
 > lasso-setup --help
 
 After all options have been run it is recomended to perform a reboot. Upon the next powerup, the setup process should be complete.
