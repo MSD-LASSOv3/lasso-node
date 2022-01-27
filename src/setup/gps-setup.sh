@@ -16,6 +16,7 @@ echo "refclock PPS /dev/pps0 refid PPS lock NMEA" >> /etc/chrony/chrony.conf
 
 systemctl disable serial-getty@ttys0.service
 systemctl stop serial-getty@ttys0.service
+systemctl mask serial-getty@ttys0.service
 systemctl restart gpsd
 
 #to test PPS do
